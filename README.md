@@ -2,12 +2,24 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-iOS%206%2B%20(armv7)-lightgrey)
+![Status](https://img.shields.io/badge/status-working-brightgreen)
 
-MobileSubstrate tweak for jailbroken iOS 6 (armv7). Fixes the Amazon Kindle
-app's "Sync to Furthest Page" failing silently with "Retrieval failed, try
-again later".
+A MobileSubstrate tweak that fixes Amazon Kindle's "Sync to Furthest Page"
+on jailbroken iOS 6, which fails silently with "Retrieval failed, try again
+later".
 
-## Cause
+## Install
+
+Add this Cydia source, then install **Kindle Whispersync Fix**:
+
+```
+https://kern0x1b.github.io/cydia/
+```
+
+Sources → Edit → Add → paste the URL above → search the package name →
+Install → relaunch Kindle.
+
+## Problem
 
 Old CFNetwork on iOS 6 attaches an empty `Expect:` header to the Kindle
 app's sync POST request. Amazon's legacy logging endpoint tolerates it, but
@@ -23,7 +35,7 @@ scoped only to the Kindle app (`com.amazon.Lassen` — MobileSubstrate filter
 in `pkgroot/Library/MobileSubstrate/DynamicLibraries/expectfix4.plist`), and
 drops the header when Kindle tries to set it with an empty value.
 
-## Building
+## Building from source
 
 Needs an armv7-capable iOS SDK (modern Xcode dropped the armv7 slice; use an
 old bundled SDK, e.g. iPhoneOS12.4.sdk with 32-bit libs intact) and
@@ -40,9 +52,9 @@ dpkg-deb --build --root-owner-group pkgroot \
   dist/space.kern0x1b.expectfix_1.0.0_iphoneos-arm.deb
 ```
 
-## Distribution
+## Publishing
 
-Built `.deb` files land in `dist/` here. Publishing to the
+Built `.deb` files land in `dist/`. Publishing to the
 [Cydia repo](https://github.com/kern0x1b/cydia) is manual:
 
 ```
@@ -54,6 +66,11 @@ git add debs Packages Packages.gz
 git commit -m "Publish kindle-sync-fix update"
 git push
 ```
+
+## Contributing
+
+Issues and PRs welcome — this is a single, narrow fix, so keep changes
+scoped to it.
 
 ## License
 
