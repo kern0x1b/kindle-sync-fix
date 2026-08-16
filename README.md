@@ -43,5 +43,5 @@ GitHub-hosted runners.
 ## Distribution
 
 Built `.deb` files in `dist/` get published to the
-[kern0x1b Cydia repo](https://github.com/kern0x1b/cydia) automatically by
+[Cydia repo](https://github.com/kern0x1b/cydia) automatically by
 `.github/workflows/publish.yml` whenever `dist/` changes on `main`.
