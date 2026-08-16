@@ -37,11 +37,17 @@ dpkg-deb --build --root-owner-group pkgroot \
   dist/space.kern0x1b.expectfix_1.0.0_iphoneos-arm.deb
 ```
 
-This step is manual (not run in CI) because the old SDK isn't available on
-GitHub-hosted runners.
-
 ## Distribution
 
-Built `.deb` files in `dist/` get published to the
-[Cydia repo](https://github.com/kern0x1b/cydia) automatically by
-`.github/workflows/publish.yml` whenever `dist/` changes on `main`.
+Built `.deb` files land in `dist/` here. Publishing to the
+[Cydia repo](https://github.com/kern0x1b/cydia) is manual:
+
+```
+cp dist/*.deb ../cydia/debs/
+cd ../cydia
+dpkg-scanpackages debs /dev/null > Packages
+gzip -k -f Packages
+git add debs Packages Packages.gz
+git commit -m "Publish kindle-sync-fix update"
+git push
+```
