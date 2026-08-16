@@ -1,5 +1,8 @@
 # Kindle Whispersync Fix
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Platform](https://img.shields.io/badge/platform-iOS%206%2B%20(armv7)-lightgrey)
+
 MobileSubstrate tweak for jailbroken iOS 6 (armv7). Fixes the Amazon Kindle
 app's "Sync to Furthest Page" failing silently with "Retrieval failed, try
 again later".
@@ -51,3 +54,7 @@ git add debs Packages Packages.gz
 git commit -m "Publish kindle-sync-fix update"
 git push
 ```
+
+## License
+
+MIT, see [LICENSE](LICENSE).
