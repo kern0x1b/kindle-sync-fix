@@ -63,11 +63,14 @@ dpkg-deb --build --root-owner-group pkgroot \
 ## Publishing
 
 Built `.deb` files land in `dist/`. Publishing to the
-[Cydia repo](https://github.com/kern0x1b/cydia) is manual:
+[Cydia repo](https://github.com/kern0x1b/cydia) is manual — set `CYDIA_REPO`
+to wherever you have that repo checked out:
 
 ```
-cp dist/*.deb ../cydia/debs/
-cd ../cydia
+CYDIA_REPO=/path/to/your/cydia/checkout
+
+cp dist/*.deb "$CYDIA_REPO/debs/"
+cd "$CYDIA_REPO"
 dpkg-scanpackages debs /dev/null > Packages
 gzip -k -f Packages
 git add debs Packages Packages.gz
