@@ -6,4 +6,8 @@ Description: Amazon's Whispersync backend (cde-ta-g7g.amazon.com) now rejects a 
 Maintainer: kern0x1b
 Author: kern0x1b
 Section: Tweaks
+Tag: purpose::extension
+Homepage: https://github.com/kern0x1b/kindle-sync-fix
+Depiction: https://kern0x1b.github.io/cydia/depictions/expectfix.html
+Icon: https://kern0x1b.github.io/cydia/CydiaIcon.png
 Depends: mobilesubstrate
