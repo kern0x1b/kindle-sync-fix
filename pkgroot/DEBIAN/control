@@ -9,5 +9,5 @@ Section: Tweaks
 Tag: purpose::extension
 Homepage: https://github.com/kern0x1b/kindle-sync-fix
 Depiction: https://kern0x1b.github.io/cydia/depictions/expectfix.html
-Icon: https://kern0x1b.github.io/cydia/CydiaIcon.png
+Icon: https://kern0x1b.github.io/cydia/icons/expectfix.png
 Depends: mobilesubstrate

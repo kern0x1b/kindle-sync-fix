@@ -1,3 +1,5 @@
+<img src="assets/icon.png" width="128" height="128" alt="Kindle Whispersync Fix">
+
 # Kindle Whispersync Fix
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
