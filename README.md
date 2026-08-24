@@ -40,9 +40,9 @@ request with mitmproxy + tcpdump.
 
 ## Fix
 
-`expectfix4.m` hooks `-[NSMutableURLRequest setValue:forHTTPHeaderField:]`,
+`kindlesyncfix.m` hooks `-[NSMutableURLRequest setValue:forHTTPHeaderField:]`,
 scoped only to the Kindle app (`com.amazon.Lassen` — MobileSubstrate filter
-in `pkgroot/Library/MobileSubstrate/DynamicLibraries/expectfix4.plist`), and
+in `pkgroot/Library/MobileSubstrate/DynamicLibraries/kindlesyncfix.plist`), and
 drops the header when Kindle tries to set it with an empty value.
 
 ## Building from source
@@ -55,11 +55,11 @@ old bundled SDK, e.g. iPhoneOS12.4.sdk with 32-bit libs intact) and
 SDK=<path to an iOS SDK with an armv7 slice>
 clang -arch armv7 -mthumb -O2 -isysroot "$SDK" -miphoneos-version-min=5.0 \
   -dynamiclib -framework Foundation -L. -lsubstrate \
-  expectfix4.m -o pkgroot/Library/MobileSubstrate/DynamicLibraries/expectfix4.dylib
-ldid -S pkgroot/Library/MobileSubstrate/DynamicLibraries/expectfix4.dylib
+  kindlesyncfix.m -o pkgroot/Library/MobileSubstrate/DynamicLibraries/kindlesyncfix.dylib
+ldid -S pkgroot/Library/MobileSubstrate/DynamicLibraries/kindlesyncfix.dylib
 
 dpkg-deb --build --root-owner-group pkgroot \
-  dist/space.kern0x1b.expectfix_1.0.0_iphoneos-arm.deb
+  dist/space.kern0x1b.kindlesyncfix_1.0.1_iphoneos-arm.deb
 ```
 
 ## Publishing
