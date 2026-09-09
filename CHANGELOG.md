@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-09-10
+
+### Removed
+- The debug log. Every hooked `Expect` header was appended to
+  `/tmp/expectfix4.log`, the file was never truncated and nothing ever read
+  it. The tweak now writes nothing to disk.
+- The link against CydiaSubstrate. The hook goes through the Objective-C
+  runtime and used no Substrate symbol, so the build no longer needs a
+  `libsubstrate.dylib` pulled off a device.
+
+### Added
+- A non-affiliation and trademark notice in the README and in the package
+  description, stating that the project is unofficial, that Amazon, Kindle and
+  Whispersync are Amazon's trademarks used referentially, that no Amazon
+  material is redistributed, and that no protection measure, DRM or licensing
+  mechanism is touched.
+- `(unofficial)` in the package's display name.
+
 ## [1.0.1] - 2026-08-24
 
 ### Changed
