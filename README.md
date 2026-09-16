@@ -53,36 +53,34 @@ anywhere, and does nothing at all in any other process.
 
 ## Building from source
 
-The tweak is built with [Charon](https://github.com/kern0x1b/charon), which
-reads `charon.toml`, cross-compiles for armv7, links with ld64, signs with
-ldid, checks every import against the iOS 6 dyld shared cache and writes the
-`.deb`. Set Charon up once per machine as its README describes: Conan, CMake,
-Ninja, the Charon configuration installed into Conan, `charon` on your `PATH`,
-and an armv7 `dyld_shared_cache_armv7` from an iOS 6 device at
-`~/.charon/dyld/`. The SDK, linker and signing tool come from Conan packages;
-Xcode and Theos are not needed.
+The tweak is built with [xmake](https://xmake.io) and the
+[Charon](https://github.com/kern0x1b/charon) addon, which `xmake.lua` names:
+xmake installs the addon and fetches the SDK, the ld64 linker and the ldid
+signing tool from Charon's package repository on the first build, at the
+commits `xmake-addons.lock` and `xmake-requires.lock` pin. Charon checks the
+dylib where it links - Thumb interworking, no `LC_ENCRYPTION_INFO`, and every
+import against an iOS 6 dyld shared cache - then strips and signs the staged
+copy and writes the `.deb`. Xcode and Theos are not needed.
+
+Once per machine:
+
+```
+brew install xmake llvm
+xcode-select --install
+```
+
+and copy `dyld_shared_cache_armv7` from an iOS 6 device to `~/.charon/dyld/`.
 
 The hook uses the Objective-C runtime, so it links no Substrate library,
 even though MobileSubstrate is what loads it at runtime.
 
 ```
-charon build
-charon package
+xmake
+xmake deb
 ```
 
-`charon build` writes everything into `build/`, and the device layout it
-stages is in `build/armv7/stage/`. `charon package` writes the `.deb` into
-the Conan cache and prints that folder as `Package folder`; the archive is in
-its `deb/` subfolder. To copy it into `dist/`:
-
-```
-mkdir -p dist
-deb_dir="$(charon package 2>&1 | sed -n 's/^.*: Package folder //p')/deb"
-cp "$deb_dir"/*.deb dist/
-```
-
-The package version is `[port] version` in `charon.toml`;
-`packaging/control` carries every other field.
+The `.deb` is written to `build/`. The package version is `set_version()` in
+`xmake.lua`; `packaging/control` carries every other field.
 
 ## Publishing
 
@@ -92,7 +90,7 @@ manual — set `CYDIA_REPO` to wherever you have that repo checked out:
 ```
 CYDIA_REPO=/path/to/your/cydia/checkout
 
-cp dist/*.deb "$CYDIA_REPO/debs/"
+cp build/*.deb "$CYDIA_REPO/debs/"
 cd "$CYDIA_REPO"
 dpkg-scanpackages debs /dev/null > Packages
 gzip -k -f Packages

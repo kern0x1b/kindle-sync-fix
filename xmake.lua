@@ -1,0 +1,21 @@
+set_project("kindlesyncfix")
+set_version("1.0.2")
+set_policy("package.requires_lock", true)
+
+add_repositories("charon https://github.com/kern0x1b/charon.git main")
+add_addons("charon")
+set_config("apple_minimum", "6.0")
+includes("@addon/charon/apple-ios")
+
+set_allowedplats("iphoneos")
+set_allowedarchs("iphoneos|armv7")
+set_defaultplat("iphoneos")
+set_defaultarchs("iphoneos|armv7")
+
+target("kindlesyncfix")
+    add_rules("@addon/charon/tweak")
+    add_files("kindlesyncfix.m")
+    add_frameworks("Foundation")
+    set_optimize("faster")
+    set_values("tweak.filter", "packaging/kindlesyncfix.plist")
+    set_values("charon.control", "packaging/control")
