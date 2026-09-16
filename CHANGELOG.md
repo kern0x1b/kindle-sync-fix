@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Built with Charon from `charon.toml` instead of a hand-run clang, ldid and
+  dpkg-deb. The minimum iOS recorded in the binary is 6.0 (it was 5.0), the
+  dylib's install name is `/Library/MobileSubstrate/DynamicLibraries/kindlesyncfix.dylib`
+  instead of a path relative to the old build folder, and every import is
+  checked against the iOS 6 dyld shared cache at build time.
+- The control file and the MobileSubstrate filter moved to `packaging/`; the
+  prebuilt dylib is no longer tracked.
+
 ## [1.0.2] - 2026-09-10
 
 ### Removed
