@@ -3,7 +3,7 @@ set_version("1.0.2")
 set_policy("package.requires_lock", true)
 
 add_repositories("charon https://github.com/kern0x1b/charon.git main")
-add_addons("charon")
+add_addons("charon v0.1.0")
 set_config("apple_minimum", "6.0")
 includes("@addon/charon/apple-ios")
 
