@@ -14,8 +14,11 @@ reads no data, writes no files, and sends nothing anywhere. Full background
 behaviour or packaging metadata.
 
 Target: armv7, iOS 6.0+ deployment, verified on iOS 6.1.3 (iPhone 4S).
-Distribution is Cydia-only (`https://kern0x1b.github.io/cydia/`); there is no
-direct device-install tooling in this repo.
+Distribution is Cydia-only (`https://kern0x1b.github.io/cydia/`); for testing,
+the pinned addon's `xmake device install` puts the built `.deb` on a device
+(see Traps).
+
+Workspace-wide procedures are skills in `$HOME/Git/projects/ios/.agents/skills/`: `device-session` (claim, run, install, launch, tap on a real device), `canon-install`, `patch-merge`, `worktree-sweep`, `session-handoff`, `band-launch`, `band-supervise`. A session started inside this repository does not list them — read `<name>/SKILL.md` there.
 
 ## 2. Layout
 
@@ -64,11 +67,10 @@ in `xmake.lua`; every other control field (`Package`, `Depends`,
 `packaging/kindlesyncfix.plist`, wired in via `set_values("tweak.filter",
 ...)`.
 
-Publishing to the Cydia repo is manual, not scripted here — see the
-**Publishing** section of `README.md` for the exact steps
-(`CYDIA_REPO=... ; cp build/*.deb ...; dpkg-scanpackages; gzip; git commit;
-git push` against the separate `kern0x1b/cydia` checkout). There is no CI
-publish path; do not add one without being asked.
+Publishing is done from the separate `cydia` repository
+(`$HOME/Git/projects/ios/cydia`) with its `publish.sh`, following that
+repository's `publish-tweak` skill (`.agents/skills/publish-tweak/SKILL.md`
+there). There is no CI publish path; do not add one without being asked.
 
 ## 4. Conventions
 
@@ -99,10 +101,9 @@ publish path; do not add one without being asked.
   present — the failure is an import-check failure inside the Charon addon,
   not an obviously missing-file error. Fetch the cache from a real iOS 6
   device first.
-- There is no `device.env` or SSH device-deploy step in this repo (unlike
-  some sibling repos in this workspace). Testing happens by installing the
-  built `.deb` through Cydia (or `dpkg -i` it by hand on a jailbroken
-  device) — do not assume a `charon device run/copy` style CLI exists here;
-  that belongs to a different, Conan-based generation of the Charon
-  toolchain used elsewhere in this workspace, not the xmake addon this repo
-  pins.
+- The pinned addon (charon `v0.2.1`) has `xmake device install|log|run|where`
+  (`-d NAME`, `-s SECONDS`) but no `list`, `claim` or `release`, and checks no
+  claim: claim with a current charon first, as the workspace `device-session`
+  skill says. It also needs a `device.env` in this directory, which a checkout
+  does not have — copy the shared one in; `device*.env` is gitignored, never
+  commit it.
