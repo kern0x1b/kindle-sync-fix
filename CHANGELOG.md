@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- Built with xmake and the Charon addon from `xmake.lua` instead of a hand-run
+- Built with xmake and the revenant addon from `xmake.lua` instead of a hand-run
   clang, ldid and dpkg-deb. The minimum iOS recorded in the binary is 6.0 (it was 5.0), the
   dylib's install name is `/Library/MobileSubstrate/DynamicLibraries/kindlesyncfix.dylib`
   instead of a path relative to the old build folder, and every import is

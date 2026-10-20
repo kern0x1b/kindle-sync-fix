@@ -54,10 +54,10 @@ anywhere, and does nothing at all in any other process.
 ## Building from source
 
 The tweak is built with [xmake](https://xmake.io) and the
-[Charon](https://github.com/kern0x1b/charon) addon, which `xmake.lua` names:
+[toolchain](https://github.com/kern0x1b/revenant/tree/main/toolchain) addon, which `xmake.lua` names:
 xmake installs the addon and fetches the SDK, the ld64 linker and the ldid
-signing tool from Charon's package repository on the first build, at the
-commits `xmake-addons.lock` and `xmake-requires.lock` pin. Charon checks the
+signing tool from Revenant's package repository on the first build, at the
+commits `xmake-addons.lock` and `xmake-requires.lock` pin. The toolchain checks the
 dylib where it links - Thumb interworking, no `LC_ENCRYPTION_INFO`, and every
 import against an iOS 6 dyld shared cache - then strips and signs the staged
 copy and writes the `.deb`. Xcode and Theos are not needed.
@@ -69,7 +69,7 @@ brew install xmake llvm
 xcode-select --install
 ```
 
-and copy `dyld_shared_cache_armv7` from an iOS 6 device to `~/.charon/dyld/`.
+and copy `dyld_shared_cache_armv7` from an iOS 6 device to `~/.revenant/dyld/`.
 
 The hook uses the Objective-C runtime, so it links no Substrate library,
 even though MobileSubstrate is what loads it at runtime.

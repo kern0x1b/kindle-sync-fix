@@ -30,14 +30,14 @@ Workspace-wide procedures are skills in `$HOME/Git/projects/ios/.agents/skills/`
   hook to the Kindle bundle ID.
 - `assets/icon.png` — package icon, also shown at the top of the README.
 - `xmake.lua`, `xmake-addons.lock`, `xmake-requires.lock` — build
-  configuration and the pinned Charon addon / SDK / linker / signing-tool
+  configuration and the pinned revenant addon / SDK / linker / signing-tool
   versions.
 - `build/`, `dist/`, `.xmake/` — generated, gitignored. Never treat as source.
 
 ## 3. Build, package, publish
 
 This repo builds with [xmake](https://xmake.io) and the
-[Charon](https://github.com/kern0x1b/charon) addon (`add_addons("charon
+[toolchain](https://github.com/kern0x1b/revenant/tree/main/toolchain) addon (`add_addons("revenant
 v0.2.1")` in `xmake.lua`, pinned by commit in `xmake-addons.lock`; the SDK,
 `ld64` and `ldid` it fetches are pinned in `xmake-requires.lock`). No Xcode
 project, no Theos, no CocoaPods.
@@ -49,8 +49,8 @@ brew install xmake llvm
 xcode-select --install
 ```
 
-and copy `dyld_shared_cache_armv7` from an iOS 6 device to `~/.charon/dyld/`
-— Charon checks every import the dylib makes against that cache and refuses
+and copy `dyld_shared_cache_armv7` from an iOS 6 device to `~/.revenant/dyld/`
+— the toolchain checks every import the dylib makes against that cache and refuses
 the build if it is missing.
 
 Build and package:
@@ -75,7 +75,7 @@ there). There is no CI publish path; do not add one without being asked.
 ## 4. Conventions
 
 - **Commits**: plain imperative subject, no `feat:`/`fix:`/`chore:` prefix
-  (a few early commits used prefixes; the convention since the Charon
+  (a few early commits used prefixes; the convention since the toolchain
   migration is a bare imperative line). The body is prose explaining *why*,
   not a bullet log of *what* — read `git log` before writing one.
 - **No real name in any tracked file or identifier.** Package IDs
@@ -94,16 +94,16 @@ there). There is no CI publish path; do not add one without being asked.
 ## 5. Traps
 
 - The package's data archive must stay `data.tar.gz`. It was `data.tar.lzma`
-  before the xmake/Charon migration; that format only some dpkg builds can
+  before the xmake/Revenant migration; that format only some dpkg builds can
   read, and this tweak targets exactly the kind of old, minimal dpkg an iOS 6
   jailbreak ships. Don't let a packaging change silently switch it back.
-- `xmake` will not build without `~/.charon/dyld/dyld_shared_cache_armv7`
-  present — the failure is an import-check failure inside the Charon addon,
+- `xmake` will not build without `~/.revenant/dyld/dyld_shared_cache_armv7`
+  present — the failure is an import-check failure inside the revenant addon,
   not an obviously missing-file error. Fetch the cache from a real iOS 6
   device first.
-- The pinned addon (charon `v0.2.1`) has `xmake device install|log|run|where`
+- The pinned addon (revenant `v0.2.1`) has `xmake device install|log|run|where`
   (`-d NAME`, `-s SECONDS`) but no `list`, `claim` or `release`, and checks no
-  claim: claim with a current charon first, as the workspace `device-session`
+  claim: claim with a current toolchain first, as the workspace `device-session`
   skill says. It also needs a `device.env` in this directory, which a checkout
   does not have — copy the shared one in; `device*.env` is gitignored, never
   commit it.
