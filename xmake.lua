@@ -2,8 +2,9 @@ set_project("kindlesyncfix")
 set_version("1.0.2")
 set_policy("package.requires_lock", true)
 
-add_repositories("revenant https://github.com/kern0x1b/revenant.git publish/toolchain")
-add_addons("revenant v0.2.1")
+local revenant = os.getenv("REVENANT_PATH") or path.directory(os.scriptdir()) .. "/revenant"
+add_repositories("revenant " .. revenant)
+add_addons("revenant", {sourcedir = path.join(revenant, "toolchain")})
 set_config("apple_minimum", "6.0")
 includes("@addon/revenant/apple-ios")
 

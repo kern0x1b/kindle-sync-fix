@@ -36,29 +36,34 @@ Workspace-wide procedures are skills in `$HOME/Git/projects/ios/.agents/skills/`
 
 ## 3. Build, package, publish
 
-This repo builds with [xmake](https://xmake.io) and the
-[toolchain](https://github.com/kern0x1b/revenant/tree/main/toolchain) addon (`add_addons("revenant
-v0.2.1")` in `xmake.lua`, pinned by commit in `xmake-addons.lock`; the SDK,
-`ld64` and `ldid` it fetches are pinned in `xmake-requires.lock`). No Xcode
-project, no Theos, no CocoaPods.
+This repo builds with the [revenant](https://github.com/kern0x1b/revenant)
+toolchain from a local checkout, named by `REVENANT_PATH` in `xmake.lua`
+(default: the `revenant` checkout beside this repo). `xmake.lua` registers that
+checkout as the `revenant` repository and takes the addon from its `toolchain/`
+directory; the SDK, `ld64`, `ldid` and LLVM it resolves are recorded in
+`xmake-requires.lock`. No Xcode project, no Theos, no CocoaPods.
 
 Once per machine:
 
 ```sh
-brew install xmake llvm
 xcode-select --install
 ```
 
-and copy `dyld_shared_cache_armv7` from an iOS 6 device to `~/.revenant/dyld/`
-— the toolchain checks every import the dylib makes against that cache and refuses
-the build if it is missing.
+and copy `dyld_shared_cache_armv7` from an iOS 6 device into the revenant
+checkout's dyld cache under `.cache/dyld/` — the toolchain checks every import
+the dylib makes against that cache and refuses the build if it is missing.
 
-Build and package:
+Build and package through that checkout's `xmakew` (a worktree needs
+`REVENANT_PATH` set, since the default is relative to the main checkout):
 
 ```sh
-xmake
-xmake deb
+"$REVENANT_PATH/xmakew" build -P . -y
+"$REVENANT_PATH/xmakew" deb -P . -y
 ```
+
+Set `REVENANT_PREBUILT=kern0x1b/revenant` and
+`REVENANT_PREBUILT_ONLY=llvm,swift,ld64,swift-runtime,libcxx` to take the
+toolchain from released prebuilts instead of compiling it from source.
 
 The `.deb` lands in `build/`. The package version comes from `set_version()`
 in `xmake.lua`; every other control field (`Package`, `Depends`,
@@ -68,7 +73,7 @@ in `xmake.lua`; every other control field (`Package`, `Depends`,
 ...)`.
 
 Publishing is done from the separate `cydia` repository
-(`$HOME/Git/projects/ios/cydia`) with its `publish.sh`, following that
+(`$HOME/Git/projects/ios/cydia`) with `xmake l tools/publish.lua`, following that
 repository's `publish-tweak` skill (`.agents/skills/publish-tweak/SKILL.md`
 there). There is no CI publish path; do not add one without being asked.
 
@@ -97,11 +102,11 @@ there). There is no CI publish path; do not add one without being asked.
   before the xmake/Revenant migration; that format only some dpkg builds can
   read, and this tweak targets exactly the kind of old, minimal dpkg an iOS 6
   jailbreak ships. Don't let a packaging change silently switch it back.
-- `xmake` will not build without `~/.revenant/dyld/dyld_shared_cache_armv7`
-  present — the failure is an import-check failure inside the revenant addon,
+- The build will not link without the dyld cache in the revenant checkout's
+  `.cache/dyld/` — the failure is an import-check failure inside the addon,
   not an obviously missing-file error. Fetch the cache from a real iOS 6
   device first.
-- The pinned addon (revenant `v0.2.1`) has `xmake device install|log|run|where`
+- The addon from the local checkout has `xmake device install|log|run|where`
   (`-d NAME`, `-s SECONDS`) but no `list`, `claim` or `release`, and checks no
   claim: claim with a current toolchain first, as the workspace `device-session`
   skill says. It also needs a `device.env` in this directory, which a checkout

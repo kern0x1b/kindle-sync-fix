@@ -3,61 +3,12 @@
         version = "1.0"
     },
     ["iphoneos|armv7"] = {
-        ["charon@iphoneos-sdk 16.4#f56260b5"] = {
+        ["revenant@ld64#f56260b5"] = {
             repo = {
-                branch = "main",
-                commit = "c6ee0f75e8a43e2443808e8dd69b45e7c1740b91",
-                url = "https://github.com/kern0x1b/charon.git"
-            },
-            version = "16.4"
-        },
-        ["charon@ld64 956.6#f56260b5"] = {
-            repo = {
-                branch = "main",
-                commit = "c6ee0f75e8a43e2443808e8dd69b45e7c1740b91",
-                url = "https://github.com/kern0x1b/charon.git"
+                commit = "4f941940b776326ea7ed7faeaac1c5e52a4c0452",
+                url = "/Users/alexanderhavrysh/Git/projects/ios/revenant"
             },
             version = "956.6"
-        },
-        ["charon@ldid 2.1.5-procursus7+23.gaf86971#f56260b5"] = {
-            repo = {
-                branch = "main",
-                commit = "c6ee0f75e8a43e2443808e8dd69b45e7c1740b91",
-                url = "https://github.com/kern0x1b/charon.git"
-            },
-            version = "2.1.5-procursus7+23.gaf86971"
-        },
-        ["charon@libplist 2.7.0#f56260b5"] = {
-            repo = {
-                branch = "main",
-                commit = "c6ee0f75e8a43e2443808e8dd69b45e7c1740b91",
-                url = "https://github.com/kern0x1b/charon.git"
-            },
-            version = "2.7.0"
-        },
-        ["charon@openssl 4.0.2#f56260b5"] = {
-            repo = {
-                branch = "main",
-                commit = "c6ee0f75e8a43e2443808e8dd69b45e7c1740b91",
-                url = "https://github.com/kern0x1b/charon.git"
-            },
-            version = "4.0.2"
-        },
-        ["cmake#f56260b5"] = {
-            repo = {
-                branch = "master",
-                commit = "aec25d154ff4b8438f4288a94488f247706cb509",
-                url = "https://gitlab.com/tboox/xmake-repo.git"
-            },
-            version = "4.3.4"
-        },
-        ["ninja#f56260b5"] = {
-            repo = {
-                branch = "master",
-                commit = "aec25d154ff4b8438f4288a94488f247706cb509",
-                url = "https://gitlab.com/tboox/xmake-repo.git"
-            },
-            version = "v1.13.2"
         }
     }
 }

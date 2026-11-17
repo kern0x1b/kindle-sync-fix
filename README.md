@@ -54,30 +54,37 @@ anywhere, and does nothing at all in any other process.
 ## Building from source
 
 The tweak is built with [xmake](https://xmake.io) and the
-[toolchain](https://github.com/kern0x1b/revenant/tree/main/toolchain) addon, which `xmake.lua` names:
-xmake installs the addon and fetches the SDK, the ld64 linker and the ldid
-signing tool from Revenant's package repository on the first build, at the
-commits `xmake-addons.lock` and `xmake-requires.lock` pin. The toolchain checks the
-dylib where it links - Thumb interworking, no `LC_ENCRYPTION_INFO`, and every
-import against an iOS 6 dyld shared cache - then strips and signs the staged
-copy and writes the `.deb`. Xcode and Theos are not needed.
+[revenant](https://github.com/kern0x1b/revenant) toolchain from a local
+checkout, named by `REVENANT_PATH` in `xmake.lua` (by default the `revenant`
+checkout beside this repo). The addon comes from that checkout's `toolchain/`
+directory, and the SDK, the ld64 linker, the ldid signing tool and LLVM it
+resolves are recorded in `xmake-requires.lock`. The toolchain checks the dylib
+where it links - Thumb interworking, no `LC_ENCRYPTION_INFO`, and every import
+against an iOS 6 dyld shared cache - then strips and signs the staged copy and
+writes the `.deb`. Xcode and Theos are not needed.
 
 Once per machine:
 
 ```
-brew install xmake llvm
 xcode-select --install
 ```
 
-and copy `dyld_shared_cache_armv7` from an iOS 6 device to `~/.revenant/dyld/`.
+and copy `dyld_shared_cache_armv7` from an iOS 6 device into the revenant
+checkout's dyld cache under `.cache/dyld/`.
 
 The hook uses the Objective-C runtime, so it links no Substrate library,
 even though MobileSubstrate is what loads it at runtime.
 
 ```
-xmake
-xmake deb
+"$REVENANT_PATH/xmakew" build -P . -y
+"$REVENANT_PATH/xmakew" deb -P . -y
 ```
+
+Set `REVENANT_PREBUILT=kern0x1b/revenant` and
+`REVENANT_PREBUILT_ONLY=llvm,swift,ld64,swift-runtime,libcxx` to use released
+prebuilts instead of compiling the toolchain from source. From a worktree,
+`REVENANT_PATH` must name the checkout because the default is relative to the
+main checkout.
 
 The `.deb` is written to `build/`. The package version is `set_version()` in
 `xmake.lua`; `packaging/control` carries every other field.
