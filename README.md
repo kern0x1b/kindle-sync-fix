@@ -41,7 +41,7 @@ request with mitmproxy + tcpdump.
 
 ## Fix
 
-`kindlesyncfix.m` hooks `-[NSMutableURLRequest setValue:forHTTPHeaderField:]`,
+`src/kindlesyncfix.m` hooks `-[NSMutableURLRequest setValue:forHTTPHeaderField:]`,
 scoped only to the Kindle app (`com.amazon.Lassen` — MobileSubstrate filter
 in `packaging/kindlesyncfix.plist`), and
 drops the header when it is set with an empty value.

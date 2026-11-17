@@ -2,7 +2,7 @@
 
 ## 1. What this is
 
-A MobileSubstrate tweak (`kindlesyncfix.m`, one file) that fixes the Kindle
+A MobileSubstrate tweak (`src/kindlesyncfix.m`, one file) that fixes the Kindle
 app's "Sync to Furthest Page" on jailbroken legacy iOS. Old CFNetwork attaches
 an empty `Expect:` HTTP header to the Kindle app's sync POST request; the real
 Whispersync endpoint rejects it with `417 Expectation Failed`. The tweak hooks
@@ -22,7 +22,7 @@ Workspace-wide procedures are skills in `$HOME/Git/projects/ios/.agents/skills/`
 
 ## 2. Layout
 
-- `kindlesyncfix.m` — the whole tweak: one Objective-C hook plus its
+- `src/kindlesyncfix.m` — the whole tweak: one Objective-C hook plus its
   constructor.
 - `packaging/control` — the dpkg control file (identifiers, description,
   Cydia metadata, Replaces/Conflicts/Provides for old package names).

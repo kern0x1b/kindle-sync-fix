@@ -14,7 +14,7 @@ set_defaultarchs("iphoneos|armv7")
 
 target("kindlesyncfix")
     add_rules("@addon/revenant/tweak")
-    add_files("kindlesyncfix.m")
+    add_files("src/kindlesyncfix.m")
     add_frameworks("Foundation")
     set_optimize("faster")
     set_values("tweak.filter", "packaging/kindlesyncfix.plist")
